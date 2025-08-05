@@ -1,0 +1,424 @@
+openapi: 3.0.0
+info:
+  description: APIs for conducting verilog coding contest
+  version: 1.0.0
+  title: Verilog Contests
+servers:
+  - url: http://localhost:5000
+paths:  
+  /auth/signup:
+    post:
+      summary: signup
+      security:
+        - bearerAuth: ["write"]
+      tags:
+        - auth
+      parameters: []
+      responses:
+        '200': &ref_0
+          description: Success.
+        '400': &ref_1
+          description: Missing params on request or validation error.
+        '401': &ref_2
+          description: Access token is missing or invalid.
+        '403': &ref_3
+          description: Forbidden.
+        '404': &ref_4
+          description: Resource not found.
+        '406': &ref_5
+          description: Not Acceptable.
+        '500': &ref_6
+          description: Internal Error.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uname:
+                  type: string
+                  example: test
+                  maxLength: 255
+                  pattern: ^[a-zA-Z0-9- ]+$
+                passwd:
+                  type: string
+                  example: pass
+                  maxLength: 255
+                  pattern: ^[a-zA-Z0-9- ]+$
+              additionalProperties: false
+  /auth/login:
+    post:
+      summary: login
+      security:
+        - bearerAuth: ["write"]
+      tags:
+        - auth
+      parameters: []
+      responses:
+        '200': *ref_0
+        '400': *ref_1
+        '401': *ref_2
+        '403': *ref_3
+        '404': *ref_4
+        '406': *ref_5
+        '500': *ref_6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uname:
+                  type: string
+                  example: Admin
+                  maxLength: 255
+                  pattern: ^[a-zA-Z0-9- ]+$
+                passwd:
+                  type: string
+                  example: Admin-User
+                  maxLength: 255
+                  pattern: ^[a-zA-Z0-9- ]+$
+              additionalProperties: false 
+  /auth/status:
+    get:
+      summary: status
+      security:
+        - bearerAuth: ["read"]
+      tags:
+        - auth
+      parameters: []
+      responses:
+        '200': *ref_0
+        '400': *ref_1
+        '401': *ref_2
+        '403': *ref_3
+        '404': *ref_4
+        '406': *ref_5
+        '500': *ref_6
+      requestBody: null
+  /auth/logout:
+    post:
+      summary: logout
+      security:
+        - bearerAuth: ["write"]
+      tags:
+        - auth
+      parameters: []
+      responses:
+        '200': *ref_0
+        '400': *ref_1
+        '401': *ref_2
+        '403': *ref_3
+        '404': *ref_4
+        '406': *ref_5
+        '500': *ref_6
+      requestBody:
+        content:
+          application/json: {}
+  
+  /contest/enroll:
+    post:
+      summary: enroll
+      security:
+        - bearerAuth: ["write"]
+      tags:
+        - contests
+      parameters: []
+      responses:
+        '200': *ref_0
+        '400': *ref_1
+        '401': *ref_2
+        '403': *ref_3
+        '404': *ref_4
+        '406': *ref_5
+        '500': *ref_6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cid:
+                  type: number
+                  example: 1
+              additionalProperties: false
+  /contest/create:
+    post:
+      summary: create contest
+      security:
+        - bearerAuth: ["read"]
+      tags:
+        - contests
+      parameters: []
+      responses:
+        '200': *ref_0
+        '400': *ref_1
+        '401': *ref_2
+        '403': *ref_3
+        '404': *ref_4
+        '406': *ref_5
+        '500': *ref_6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cname:
+                  type: string
+                  example: cname
+  /contest/:
+    get:
+      summary: view contests
+      security:
+        - bearerAuth: ["read"]
+      tags:
+        - contests
+      parameters: []
+      responses:
+        '200': *ref_0
+        '400': *ref_1
+        '401': *ref_2
+        '403': *ref_3
+        '404': *ref_4
+        '406': *ref_5
+        '500': *ref_6
+      requestBody: null
+
+  /problems/create:
+    post:
+      summary: create problem
+      security:
+        - bearerAuth: ["read"]
+      tags:
+        - problems
+      parameters: []
+      responses:
+        '200': *ref_0
+        '400': *ref_1
+        '401': *ref_2
+        '403': *ref_3
+        '404': *ref_4
+        '406': *ref_5
+        '500': *ref_6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pname:
+                  type: string
+                  example: pname
+                pdesc:
+                  type: string
+                  example: pdesc
+                tb:
+                  type: string
+                  example: qname
+                code:
+                  type: string
+                  example: qdesc
+  /problems/edit:
+    patch:
+      summary: edit problem
+      security:
+        - bearerAuth: ["read"]
+      tags:
+        - problems
+      parameters: []
+      responses:
+        '200': *ref_0
+        '400': *ref_1
+        '401': *ref_2
+        '403': *ref_3
+        '404': *ref_4
+        '406': *ref_5
+        '500': *ref_6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pid:
+                  type: number
+                  example: 1
+                pname:
+                  type: string
+                  example: pname
+                pdesc:
+                  type: string
+                  example: pdesc
+  /problems/delete:
+    delete:
+      summary: delete problem
+      security:
+        - bearerAuth: ["read"]
+      tags:
+        - problems
+      parameters: []
+      responses:
+        '200': *ref_0
+        '400': *ref_1
+        '401': *ref_2
+        '403': *ref_3
+        '404': *ref_4
+        '406': *ref_5
+        '500': *ref_6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pid:
+                  type: number
+                  example: 1
+
+  /problems/add:
+    post:
+      summary: add problem
+      security:
+        - bearerAuth: ["read"]
+      tags:
+        - problems
+      parameters: []
+      responses:
+        '200': *ref_0
+        '400': *ref_1
+        '401': *ref_2
+        '403': *ref_3
+        '404': *ref_4
+        '406': *ref_5
+        '500': *ref_6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pid:
+                  type: number
+                  example: 1
+                cid:
+                  type: number
+                  example: 1
+  /problems/remove:
+    delete:
+      summary: remove problem
+      security:
+        - bearerAuth: ["read"]
+      tags:
+        - problems
+      parameters: []
+      responses:
+        '200': *ref_0
+        '400': *ref_1
+        '401': *ref_2
+        '403': *ref_3
+        '404': *ref_4
+        '406': *ref_5
+        '500': *ref_6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pid:
+                  type: number
+                  example: 1
+                cid:
+                  type: number
+                  example: 1
+  /problems/all:
+    get:
+      summary: view problems
+      security:
+        - bearerAuth: ["read"]
+      tags:
+        - problems
+      parameters: []
+      responses:
+        '200': *ref_0
+        '400': *ref_1
+        '401': *ref_2
+        '403': *ref_3
+        '404': *ref_4
+        '406': *ref_5
+        '500': *ref_6
+      requestBody: null
+
+  /submission/submit:
+    post:
+      summary: submit solution
+      security:
+        - bearerAuth: ["read"]
+      tags:
+        - submit
+      parameters: []
+      responses:
+        '200': *ref_0
+        '400': *ref_1
+        '401': *ref_2
+        '403': *ref_3
+        '404': *ref_4
+        '406': *ref_5
+        '500': *ref_6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pid:
+                  type: number
+                  example: 1
+                cid:
+                  type: number
+                  example: 1
+                solution:
+                  type: string
+                  example: verilog code
+  /submission/mysubmissions:
+    get:
+      summary: view my submissions
+      security:
+        - bearerAuth: ["read"]
+      tags:
+        - submit
+      parameters: []
+      responses:
+        '200': *ref_0
+        '400': *ref_1
+        '401': *ref_2
+        '403': *ref_3
+        '404': *ref_4
+        '406': *ref_5
+        '500': *ref_6
+      requestBody: null
+  /submission/all:
+    get:
+      summary: view all submissions
+      security:
+        - bearerAuth: ["read"]
+      tags:
+        - submit
+      parameters: []
+      responses:
+        '200': *ref_0
+        '400': *ref_1
+        '401': *ref_2
+        '403': *ref_3
+        '404': *ref_4
+        '406': *ref_5
+        '500': *ref_6
+      requestBody: null
+
+
+tags:
+  - name: auth
+  - name: contests
+  - name: problems
+  - name: submit
